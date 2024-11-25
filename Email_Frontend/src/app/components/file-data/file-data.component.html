@@ -1,0 +1,81 @@
+<!-- <h2>Display Data</h2> -->
+<div class="file-selector">
+  <label for="fileName">Select a File:</label>
+  <select id="fileName" [(ngModel)]="selectedFileName" (change)="onFileNameSelect()">
+    <option value="" disabled>Select a file</option>
+    <option *ngFor="let fileName of fileNames" [value]="fileName">{{ fileName }}</option>
+  </select>
+</div>
+
+<div *ngIf="fileData.length > 0" class="file-data">
+  <h3>File Data for: {{ selectedFileName }}</h3>
+  <table>
+    <thead>
+      <tr>
+        <th *ngFor="let header of fileData[0]">{{ header }}</th>
+        <th>Email Template</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of fileData.slice(1)">
+        <td *ngFor="let cell of row">{{ cell }}</td>
+        <td>
+          <select [(ngModel)]="row.templateId">
+            <option value="">None</option>
+            <option *ngFor="let template of emailTemplates" [value]="template.id">{{ template.subject }}</option>
+          </select>
+        </td>
+        <td>
+          <button (click)="assignTemplate(row)">Assign</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<h2>Assigned Templates</h2>
+<div *ngIf="assignedTemplates.length > 0" class="assigned-templates">
+  <table>
+    <thead>
+      <tr>
+        <th>Data ID</th>
+        <th>Email</th>
+        <th>Template ID</th>
+        <th>File Name</th>
+        <!-- <th>Flag</th> -->
+        <th>Day</th>
+        <th>Last Sent Date</th> <!-- New Column -->
+        <!-- <th>Next Send Date</th> New Column -->
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let assignment of assignedTemplates">
+        <td>{{ assignment.dataId }}</td>
+        <td>{{ assignment.dataEmail }}</td>
+        <td>{{ assignment.templateId }}</td>
+        <td>{{ assignment.fileName }}</td>
+        <!-- <td>{{ assignment.flag === 1 ? 'Enabled' : 'Disabled' }}</td> -->
+        <td>
+          <input type="number" [(ngModel)]="assignment.day" min="1" max="31" placeholder="Day (1-31)">
+        </td>
+        <td>{{ assignment.lastSentDate | date:'short' }}</td> <!-- Display lastSentDate -->
+        <!-- <td>{{ assignment.nextSendDate | date:'short' }}</td> Display nextSendDate -->
+        <td>
+       
+          <button (click)="toggleRowFlag(assignment)">
+            {{ assignment.flag === 1 ? 'Disable' : 'Enable' }}
+          </button>
+          <button (click)="saveDay(assignment)">Save</button>
+          <button (click)="deleteTemplate(assignment)">Delete</button>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Send email button -->
+  <button (click)="sendEmails()">Send Emails</button>
+</div>

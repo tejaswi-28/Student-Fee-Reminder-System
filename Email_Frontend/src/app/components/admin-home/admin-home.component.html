@@ -1,0 +1,31 @@
+<div class="admin-panel" [ngClass]="isDarkMode ? 'dark-mode' : 'light-mode'">
+  <aside class="sidebar">
+    <div class="logo">Admin Panel</div>
+    <ul class="nav-menu">
+      <li>
+        <a routerLink="emailTemp">Email Template</a
+        ><i class="fa-solid fa-envelope"></i>
+      </li>
+      <li>
+        <a routerLink="new">Upload files</a><i class="fa-solid fa-upload"></i>
+      </li>
+      <li>
+        <a routerLink="dynamicData">Display Data</a
+        ><i class="fa-solid fa-database"></i>
+      </li>
+    </ul>
+  </aside>
+
+  <!-- Router outlet for child routes -->
+  <main class="main-content">
+    <header class="header">
+      <button class="toggle-mode" (click)="toggleMode()">
+        {{ isDarkMode ? "Light Mode" : "Dark Mode" }}
+      </button>
+    </header>
+    <section class="content" *ngIf="showWelcomeMessage">
+      <h1>Welcome to the Admin Dashboard</h1>
+    </section>
+    <router-outlet></router-outlet>
+  </main>
+</div>
